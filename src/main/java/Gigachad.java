@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Gigachad {
@@ -12,11 +13,24 @@ public class Gigachad {
         System.out.println("Bye. Hope to see you again soon!");
 
         Scanner scanner = new Scanner(System.in);
+        ArrayList<String> listOfTasks = new ArrayList<>();
+
         System.out.println("Enter a command: ");
         String command = "";
         while (!command.equals("bye")) {
             command = scanner.nextLine();
-            System.out.println(command);
+
+            // if command == list, list everything out
+            // else if command != "bye", add to list
+            // if command == "bye", exit
+            if (command.equals("list")) {
+                for (int i = 0; i < listOfTasks.size(); i++) {
+                   System.out.println((i + 1) + ". " + listOfTasks.get(i));
+                }
+            } else {
+                listOfTasks.add(command);
+                System.out.println("added: " + command);
+            }
         }
 
         System.out.println("Bye. Hope to see you again soon!");
