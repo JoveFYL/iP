@@ -12,24 +12,47 @@ public class Gigachad {
         System.out.println("What can I do for you?");
         System.out.println("Bye. Hope to see you again soon!");
 
+        // init scanner
         Scanner scanner = new Scanner(System.in);
-        ArrayList<String> listOfTasks = new ArrayList<>();
 
+        // init arraylist to store tasks
+        ArrayList<Task> listOfTasks = new ArrayList<>();
+
+        // ask for user input
         System.out.println("Enter a command: ");
         String command = "";
+
         while (!command.equals("bye")) {
             command = scanner.nextLine();
 
-            // if command == list, list everything out
-            // else if command != "bye", add to list
-            // if command == "bye", exit
             if (command.equals("list")) {
                 for (int i = 0; i < listOfTasks.size(); i++) {
-                   System.out.println((i + 1) + ". " + listOfTasks.get(i));
+                    System.out.println((i + 1) + ". " + listOfTasks.get(i));
+                }
+            } else if (command.startsWith("mark")) {
+                String[] parts = command.split(" ");
+                if (parts.length == 2) {
+                    int taskNumber = Integer.parseInt(parts[1]) - 1;
+                    if (taskNumber > listOfTasks.size()) {
+                        System.out.println("Invalid task!");
+                    } else {
+                        listOfTasks.get(taskNumber).markAsDone();
+                    }
+                }
+            } else if (command.startsWith("unmark")) {
+                String[] parts = command.split(" ");
+                if (parts.length == 2) {
+                    int taskNumber = Integer.parseInt(parts[1]) - 1;
+                    if (taskNumber > listOfTasks.size()) {
+                        System.out.println("Invalid task!");
+                    } else {
+                        listOfTasks.get(taskNumber).unmark();
+                    }
                 }
             } else {
-                listOfTasks.add(command);
-                System.out.println("added: " + command);
+                Task newTask = new Task(command);
+                listOfTasks.add(newTask);
+                System.out.println("added: " + newTask.getDescription());
             }
         }
 
