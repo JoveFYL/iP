@@ -41,12 +41,35 @@ public class Gigachad {
                         System.out.println(e.getMessage());
                     }
                     break;
+                case "delete":
+                    try {
+                        if (listOfTasks.isEmpty()) {
+                            throw new GigachadException("Empty list! Nothing can be deleted.");
+                        }
+
+                        if (parts.length == 2) {
+                            int taskNumber = Integer.parseInt(parts[1]) - 1;
+                            if (taskNumber >= listOfTasks.size()) {
+                                throw new GigachadException("Invalid task number! You only have " + listOfTasks.size()
+                                        + " tasks.");
+                            } else {
+                                Task removedTask = listOfTasks.remove(taskNumber);
+                                System.out.println("Noted. I've removed this task:");
+                                System.out.println("  " + removedTask);
+                                System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                            }
+                        }
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
                 case "mark":
                     try {
                         if (parts.length == 2) {
                             int taskNumber = Integer.parseInt(parts[1]) - 1;
-                            if (taskNumber > listOfTasks.size()) {
-                                System.out.println("Invalid task!");
+                            if (taskNumber >= listOfTasks.size()) {
+                                throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
+                                        + " tasks.");
                             } else {
                                 listOfTasks.get(taskNumber).markAsDone();
                             }
@@ -61,8 +84,9 @@ public class Gigachad {
                     try {
                         if (parts.length == 2) {
                             int taskNumber = Integer.parseInt(parts[1]) - 1;
-                            if (taskNumber > listOfTasks.size()) {
-                                System.out.println("Invalid task!");
+                            if (taskNumber >= listOfTasks.size()) {
+                                throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
+                                        + " tasks.");
                             } else {
                                 listOfTasks.get(taskNumber).unmark();
                             }
@@ -75,7 +99,7 @@ public class Gigachad {
                     break;
                 case "todo":
                     try {
-                        if (parts.length < 2 && command.length() > 4) {
+                        if (parts.length >= 2 && command.length() > 4) {
                             String todoDescription = command.substring(5); // skip "todo "
                             ToDo todo = new ToDo(todoDescription);
                             listOfTasks.add(todo);
