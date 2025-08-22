@@ -29,73 +29,130 @@ public class Gigachad {
 
             switch (firstWord) {
                 case "list":
-                    for (int i = 0; i < listOfTasks.size(); i++) {
-                        System.out.println((i + 1) + "." + listOfTasks.get(i));
+                    try {
+                        if (listOfTasks.isEmpty()) {
+                            throw new GigachadException("Empty list!");
+                        }
+
+                        for (int i = 0; i < listOfTasks.size(); i++) {
+                            System.out.println((i + 1) + ". " + listOfTasks.get(i));
+                        }
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "mark":
-                    if (parts.length == 2) {
-                        int taskNumber = Integer.parseInt(parts[1]) - 1;
-                        if (taskNumber > listOfTasks.size()) {
-                            System.out.println("Invalid task!");
+                    try {
+                        if (parts.length == 2) {
+                            int taskNumber = Integer.parseInt(parts[1]) - 1;
+                            if (taskNumber > listOfTasks.size()) {
+                                System.out.println("Invalid task!");
+                            } else {
+                                listOfTasks.get(taskNumber).markAsDone();
+                            }
                         } else {
-                            listOfTasks.get(taskNumber).markAsDone();
+                            throw new GigachadException("Invalid usage! Usage: mark <int>");
                         }
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "unmark":
-                    if (parts.length == 2) {
-                        int taskNumber = Integer.parseInt(parts[1]) - 1;
-                        if (taskNumber > listOfTasks.size()) {
-                            System.out.println("Invalid task!");
+                    try {
+                        if (parts.length == 2) {
+                            int taskNumber = Integer.parseInt(parts[1]) - 1;
+                            if (taskNumber > listOfTasks.size()) {
+                                System.out.println("Invalid task!");
+                            } else {
+                                listOfTasks.get(taskNumber).unmark();
+                            }
                         } else {
-                            listOfTasks.get(taskNumber).unmark();
+                            throw new GigachadException("Invalid usage! Usage: mark <int>");
                         }
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
                     }
                     break;
                 case "todo":
-                    String todoDescription = command.substring(5); // skip "todo "
-                    ToDo todo = new ToDo(todoDescription);
-                    listOfTasks.add(todo);
+                    try {
+                        if (parts.length < 2 && command.length() > 4) {
+                            String todoDescription = command.substring(5); // skip "todo "
+                            ToDo todo = new ToDo(todoDescription);
+                            listOfTasks.add(todo);
 
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + todo);
-                    System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                            System.out.println("Got it. I've added this task:");
+                            System.out.println("  " + todo);
+                            System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                        } else {
+                            throw new GigachadException("Invalid usage! Usage: todo <task>");
+                        }
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "deadline":
-                    int firstDeadlineSpace = command.indexOf(' ');
-                    int byIndexDeadline = command.indexOf('/');
+                    try {
+                        int firstSpaceDeadline = command.indexOf(' ');
+                        int byIndexDeadline = command.indexOf('/');
+                        if (firstSpaceDeadline == -1 || byIndexDeadline == -1
+                                || byIndexDeadline <= firstSpaceDeadline) {
+                            throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date/time>");
+                        }
 
-                    String deadlineDescription = command.substring(firstDeadlineSpace + 1, byIndexDeadline).trim();
-                    String deadlineDueDate = command.substring(byIndexDeadline + 4).trim();
+                        String deadlineDescription = command.substring(firstSpaceDeadline + 1, byIndexDeadline).trim();
+                        String deadlineDueDate = command.substring(byIndexDeadline + 4).trim();
 
-                    Deadline deadline = new Deadline(deadlineDescription, deadlineDueDate);
-                    listOfTasks.add(deadline);
+                        if (deadlineDescription.isEmpty() || deadlineDueDate.isEmpty()) {
+                            throw new GigachadException("Invalid usage! Task description or date missing.");
+                        }
 
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + deadline);
-                    System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                        Deadline deadline = new Deadline(deadlineDescription, deadlineDueDate);
+                        listOfTasks.add(deadline);
+
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + deadline);
+                        System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "event":
-                    int firstSpace = command.indexOf(' ');
-                    int fromIndexEvent = command.indexOf(" /from");
-                    int toIndexEvent = command.indexOf(" /to");
+                    try {
+                        int firstSpace = command.indexOf(' ');
+                        int fromIndexEvent = command.indexOf(" /from");
+                        int toIndexEvent = command.indexOf(" /to");
 
-                    String eventDescription = command.substring(firstSpace + 1, fromIndexEvent).trim();
-                    String from = command.substring(fromIndexEvent + 7, toIndexEvent).trim();
-                    String to = command.substring(toIndexEvent + 5).trim();
+                        if (firstSpace == -1 || fromIndexEvent == -1 || toIndexEvent == -1) {
+                            throw new GigachadException("Invalid usage! Usage: event <task> /from <beginning date> " +
+                                    "/to <end date");
+                        }
 
-                    Event event = new Event(eventDescription, from, to);
-                    listOfTasks.add(event);
+                        String eventDescription = command.substring(firstSpace + 1, fromIndexEvent).trim();
+                        String from = command.substring(fromIndexEvent + 7, toIndexEvent).trim();
+                        String to = command.substring(toIndexEvent + 5).trim();
 
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + event);
-                    System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                        if (eventDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                            throw new GigachadException("Invalid usage! Task description or date missing.");
+                        }
+
+                        Event event = new Event(eventDescription, from, to);
+                        listOfTasks.add(event);
+
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + event);
+                        System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                    } catch (GigachadException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "bye":
                     System.out.println("Bye. Hope to see you again soon!");
                     scanner.close();
                     break;
+                default:
+                    System.out.println("Invalid command! To add tasks, use todo, deadline or event. " +
+                            "To mark or unmark tasks as done or undone, use mark <taskNumber> or unmark <taskNumber>" +
+                            "To exit, use bye.");
             }
         }
     }
