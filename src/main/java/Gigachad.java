@@ -8,9 +8,10 @@ public class Gigachad {
                 + "| | | | | | | |/ / _ \\\n"
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
+        System.out.println("Hello from");
+        System.out.println(logo);
         System.out.println("Hello! I'm Gigachad");
         System.out.println("What can I do for you?");
-        System.out.println("Bye. Hope to see you again soon!");
 
         // init scanner
         Scanner scanner = new Scanner(System.in);
@@ -19,7 +20,6 @@ public class Gigachad {
         ArrayList<Task> listOfTasks = new ArrayList<>();
 
         // ask for user input
-        System.out.println("Enter a command: ");
         String command = "";
 
         while (!command.equals("bye")) {
@@ -30,7 +30,7 @@ public class Gigachad {
             switch (firstWord) {
                 case "list":
                     for (int i = 0; i < listOfTasks.size(); i++) {
-                        System.out.println((i + 1) + ". " + listOfTasks.get(i));
+                        System.out.println((i + 1) + "." + listOfTasks.get(i));
                     }
                     break;
                 case "mark":
@@ -59,7 +59,7 @@ public class Gigachad {
                     listOfTasks.add(todo);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(todo);
+                    System.out.println("  " + todo);
                     System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
                     break;
                 case "deadline":
@@ -73,7 +73,7 @@ public class Gigachad {
                     listOfTasks.add(deadline);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(deadline);
+                    System.out.println("  " + deadline);
                     System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
                     break;
                 case "event":
@@ -89,7 +89,7 @@ public class Gigachad {
                     listOfTasks.add(event);
 
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(event);
+                    System.out.println("  " + event);
                     System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
                     break;
                 case "bye":
