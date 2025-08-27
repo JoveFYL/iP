@@ -1,5 +1,8 @@
 import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -29,6 +32,7 @@ public class Gigachad {
 
         // ask for user input
         String command = "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         while (!command.equals("bye")) {
             command = scanner.nextLine();
@@ -62,6 +66,7 @@ public class Gigachad {
                                     + " tasks.");
                         } else {
                             Task removedTask = listOfTasks.remove(taskNumber);
+                            storage.saveToStorage(listOfTasks);
                             System.out.println("Noted. I've removed this task:");
                             System.out.println("  " + removedTask);
                             System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
@@ -137,17 +142,19 @@ public class Gigachad {
                     int byIndexDeadline = command.indexOf('/');
                     if (firstSpaceDeadline == -1 || byIndexDeadline == -1
                             || byIndexDeadline <= firstSpaceDeadline) {
-                        throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date/time>");
+                        throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date/time>. " +
+                                "Format for the date is: yyyy-MM-dd HHmm");
                     }
 
                     String deadlineDescription = command.substring(firstSpaceDeadline + 1, byIndexDeadline).trim();
                     String deadlineDueDate = command.substring(byIndexDeadline + 4).trim();
 
                     if (deadlineDescription.isEmpty() || deadlineDueDate.isEmpty()) {
-                        throw new GigachadException("Invalid usage! Task description or date missing.");
+                        throw new GigachadException("Invalid usage! Task description or datetime missing.");
                     }
 
-                    Deadline deadline = new Deadline(deadlineDescription, deadlineDueDate);
+                    Deadline deadline = new Deadline(deadlineDescription,
+                            LocalDateTime.parse(deadlineDueDate, formatter));
                     listOfTasks.add(deadline);
                     storage.saveToStorage(listOfTasks);
 
@@ -166,7 +173,7 @@ public class Gigachad {
 
                     if (firstSpace == -1 || fromIndexEvent == -1 || toIndexEvent == -1) {
                         throw new GigachadException("Invalid usage! Usage: event <task> /from <beginning date> " +
-                                "/to <end date");
+                                "/to <end date>. Format for the date is: yyyy-MM-dd HHmm");
                     }
 
                     String eventDescription = command.substring(firstSpace + 1, fromIndexEvent).trim();
@@ -177,7 +184,9 @@ public class Gigachad {
                         throw new GigachadException("Invalid usage! Task description or date missing.");
                     }
 
-                    Event event = new Event(eventDescription, from, to);
+                    Event event = new Event(eventDescription,
+                            LocalDateTime.parse(from, formatter),
+                            LocalDateTime.parse(to, formatter));
                     listOfTasks.add(event);
                     storage.saveToStorage(listOfTasks);
 

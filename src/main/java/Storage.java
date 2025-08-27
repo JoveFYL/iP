@@ -1,12 +1,11 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Storage {
@@ -64,7 +63,9 @@ public class Storage {
                                 throw new GigachadException("Invalid format! Corrupted file!");
                             }
 
-                            Deadline deadline = new Deadline(todoDescription, deadlineDueDate);
+                            Deadline deadline = new Deadline(todoDescription,
+                                    LocalDateTime.parse(deadlineDueDate,
+                                            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
                             listOfTasks.add(deadline);
                             if (Integer.parseInt(isDone) == 1) deadline.markAsDone();
                         } catch (GigachadException e) {
@@ -73,20 +74,22 @@ public class Storage {
                         break;
                     case "E":
                         try {
-                            if (parts.length != 4 && parts[3].split("-").length != 2) {
+                            if (parts.length != 4 && parts[3].split(" - ").length != 2) {
                                 throw new GigachadException("Invalid format! Corrupted file!");
                             }
 
                             System.out.println(parts[3]);
-                            String[] fromToDates = parts[3].split("-");
+                            String[] fromToDates = parts[3].split(" - ");
                             String from = fromToDates[0];
                             String to = fromToDates[1];
 
                             if (todoDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
                                 throw new GigachadException("Invalid format! Task description or date missing.");
                             }
-
-                            Event event = new Event(todoDescription, from, to);
+                            System.out.println(LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
+                            Event event = new Event(todoDescription,
+                                    LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")),
+                                    LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
                             listOfTasks.add(event);
                             if (Integer.parseInt(isDone) == 1) event.markAsDone();
                         } catch (GigachadException e) {
