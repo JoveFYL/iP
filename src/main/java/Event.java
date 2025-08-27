@@ -1,5 +1,4 @@
 public class Event extends Task {
-    protected String description;
     protected String from;
     protected String to;
 
@@ -7,6 +6,12 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+    }
+
+    @Override
+    public String saveFormat() {
+        System.out.println(this.description);
+        return "E | " + this.getNumericIsDone() + " | " + this.description + " | " + from + "-" + to;
     }
 
     @Override
