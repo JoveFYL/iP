@@ -1,8 +1,15 @@
+package Gigachad;
+
+import Gigachad.exception.GigachadException;
+import Gigachad.task.Deadline;
+import Gigachad.task.Event;
+import Gigachad.task.Task;
+import Gigachad.task.ToDo;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -82,7 +89,7 @@ public class Storage {
                             String to = fromToDates[1];
 
                             if (todoDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                                throw new GigachadException("Invalid format! Task description or date missing.");
+                                throw new GigachadException("Invalid format! Gigachad.task.Task description or date missing.");
                             }
 
                             Event event = new Event(todoDescription,
@@ -98,7 +105,7 @@ public class Storage {
                 }
             }
 
-            System.out.println("Storage initialised");
+            System.out.println("Gigachad.Storage initialised");
             System.out.println("You have the following tasks: ");
             for (int i = 0; i < listOfTasks.size(); i++) {
                 System.out.print(i + 1 + ". ");

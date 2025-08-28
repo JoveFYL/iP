@@ -1,4 +1,7 @@
-import java.util.ArrayList;
+package Gigachad;
+
+import Gigachad.task.Task;
+
 import java.util.Scanner;
 
 public class Ui {

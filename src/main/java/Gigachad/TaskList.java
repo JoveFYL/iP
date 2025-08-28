@@ -1,3 +1,7 @@
+package Gigachad;
+
+import Gigachad.task.Task;
+
 import java.util.ArrayList;
 
 public class TaskList {
