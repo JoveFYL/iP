@@ -19,19 +19,19 @@ public class Task {
         return this.description;
     }
 
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
     public void markAsDone() {
         if (!isDone) {
             isDone = true;
-        } else {
-            System.out.println("I already marked this task as done!");
         }
     }
 
     public void unmark() {
         if (isDone) {
             isDone = false;
-        } else {
-            System.out.println("I already marked this task as undone!");
         }
     }
 

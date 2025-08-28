@@ -40,7 +40,6 @@ public class Storage {
                     String command = parts[0];
                     String isDone = parts[1];
                     String todoDescription = parts[2];
-                    System.out.println(todoDescription);
 
                     switch (command) {
                     case "T":
@@ -78,7 +77,6 @@ public class Storage {
                                 throw new GigachadException("Invalid format! Corrupted file!");
                             }
 
-                            System.out.println(parts[3]);
                             String[] fromToDates = parts[3].split(" - ");
                             String from = fromToDates[0];
                             String to = fromToDates[1];
@@ -86,7 +84,7 @@ public class Storage {
                             if (todoDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
                                 throw new GigachadException("Invalid format! Task description or date missing.");
                             }
-                            System.out.println(LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
+
                             Event event = new Event(todoDescription,
                                     LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")),
                                     LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
@@ -113,10 +111,10 @@ public class Storage {
         }
     }
 
-    public void saveToStorage(ArrayList<Task> taskList) {
+    public void saveToStorage(TaskList taskList) {
         try {
             FileWriter fw = new FileWriter(filePath.toString());
-            for (Task task : taskList) {
+            for (Task task : taskList.allTasks()) {
                 fw.write(task.saveFormat());
                 fw.write("\n");
             }
