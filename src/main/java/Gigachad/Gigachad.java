@@ -1,3 +1,7 @@
+package Gigachad;
+
+import Gigachad.exception.GigachadException;
+
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
