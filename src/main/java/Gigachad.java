@@ -8,24 +8,17 @@ import java.util.Scanner;
 
 public class Gigachad {
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from");
-        System.out.println(logo);
-        System.out.println("Hello! I'm Gigachad");
-        System.out.println("What can I do for you?");
-
         // init scanner
         Scanner scanner = new Scanner(System.in);
 
         // universal path
         Path filePath = Paths.get("data/tasks.txt");
 
-        // init Storage
+        // init Storage, Ui
         Storage storage = new Storage(filePath);
+        Ui ui = new Ui();
+
+        ui.welcomeUser();
 
         // init arraylist to store tasks
         ArrayList<Task> listOfTasks = storage.initStorage();
@@ -35,7 +28,7 @@ public class Gigachad {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         while (!command.equals("bye")) {
-            command = scanner.nextLine();
+            command = ui.readCommand();
             String[] parts = command.split(" ");
             String firstWord = parts[0].toLowerCase();
 
@@ -46,9 +39,7 @@ public class Gigachad {
                         throw new GigachadException("Empty list!");
                     }
 
-                    for (int i = 0; i < listOfTasks.size(); i++) {
-                        System.out.println((i + 1) + ". " + listOfTasks.get(i));
-                    }
+                    ui.listTasks(listOfTasks);
                 } catch (GigachadException e) {
                     System.out.println(e.getMessage());
                 }
@@ -67,9 +58,7 @@ public class Gigachad {
                         } else {
                             Task removedTask = listOfTasks.remove(taskNumber);
                             storage.saveToStorage(listOfTasks);
-                            System.out.println("Noted. I've removed this task:");
-                            System.out.println("  " + removedTask);
-                            System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                            ui.deleteTask(removedTask, listOfTasks);
                         }
                     }
                 } catch (GigachadException e) {
@@ -87,8 +76,7 @@ public class Gigachad {
                             Task task = listOfTasks.get(taskNumber);
                             task.markAsDone();
                             storage.saveToStorage(listOfTasks);
-                            System.out.println("Nice! I've marked this task as done:");
-                            System.out.println(task);
+                            ui.markTask(task);
                         }
                     } else {
                         throw new GigachadException("Invalid usage! Usage: mark <int>");
@@ -108,8 +96,7 @@ public class Gigachad {
                             Task task = listOfTasks.get(taskNumber);
                             listOfTasks.get(taskNumber).unmark();
                             storage.saveToStorage(listOfTasks);
-                            System.out.println("OK, I've marked this task as not done yet:");
-                            System.out.println(task);
+                            ui.unmarkTask(task);
                         }
                     } else {
                         throw new GigachadException("Invalid usage! Usage: mark <int>");
@@ -126,9 +113,7 @@ public class Gigachad {
                         listOfTasks.add(todo);
                         storage.saveToStorage(listOfTasks);
 
-                        System.out.println("Got it. I've added this task:");
-                        System.out.println("  " + todo);
-                        System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                        ui.addTask(todo, listOfTasks);
                     } else {
                         throw new GigachadException("Invalid usage! Usage: todo <task>");
                     }
@@ -158,9 +143,7 @@ public class Gigachad {
                     listOfTasks.add(deadline);
                     storage.saveToStorage(listOfTasks);
 
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + deadline);
-                    System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                    ui.addTask(deadline, listOfTasks);
                 } catch (GigachadException e) {
                     System.out.println(e.getMessage());
                 }
@@ -190,21 +173,16 @@ public class Gigachad {
                     listOfTasks.add(event);
                     storage.saveToStorage(listOfTasks);
 
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + event);
-                    System.out.println("Now you have " + listOfTasks.size() + " tasks in the list.");
+                    ui.addTask(event, listOfTasks);
                 } catch (GigachadException e) {
                     System.out.println(e.getMessage());
                 }
                 break;
             case "bye":
-                System.out.println("Bye. Hope to see you again soon!");
-                scanner.close();
+                ui.goodbyeUser();
                 break;
             default:
-                System.out.println("Invalid command! To add tasks, use todo, deadline or event. " +
-                        "To mark or unmark tasks as done or undone, use mark <taskNumber> or unmark <taskNumber>" +
-                        "To exit, use bye.");
+                ui.invalidCommand();
             }
         }
     }
