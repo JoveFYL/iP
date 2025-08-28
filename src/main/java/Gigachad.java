@@ -1,32 +1,26 @@
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.time.format.DateTimeParseException;
 
 public class Gigachad {
-    public static void main(String[] args) {
-        // init scanner
-        Scanner scanner = new Scanner(System.in);
+    private final Storage storage;
+    private final TaskList listOfTasks;
+    private final Ui ui;
 
-        // universal path
-        Path filePath = Paths.get("data/tasks.txt");
+    public Gigachad(Path filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        this.listOfTasks = new TaskList(storage.initStorage());
+    }
 
-        // init Storage, Ui
-        Storage storage = new Storage(filePath);
-        Ui ui = new Ui();
-
+    public void run() {
         ui.welcomeUser();
-
-        // init arraylist to store tasks
-        ArrayList<Task> listOfTasks = storage.initStorage();
 
         // ask for user input
         String command = "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-
         while (!command.equals("bye")) {
             command = ui.readCommand();
             String[] parts = command.split(" ");
@@ -56,7 +50,7 @@ public class Gigachad {
                             throw new GigachadException("Invalid task number! You only have " + listOfTasks.size()
                                     + " tasks.");
                         } else {
-                            Task removedTask = listOfTasks.remove(taskNumber);
+                            Task removedTask = listOfTasks.deleteTask(taskNumber);
                             storage.saveToStorage(listOfTasks);
                             ui.deleteTask(removedTask, listOfTasks);
                         }
@@ -73,10 +67,10 @@ public class Gigachad {
                             throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
                                     + " tasks.");
                         } else {
-                            Task task = listOfTasks.get(taskNumber);
+                            Task task = listOfTasks.getTask(taskNumber);
+                            ui.markTask(task);
                             task.markAsDone();
                             storage.saveToStorage(listOfTasks);
-                            ui.markTask(task);
                         }
                     } else {
                         throw new GigachadException("Invalid usage! Usage: mark <int>");
@@ -93,10 +87,10 @@ public class Gigachad {
                             throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
                                     + " tasks.");
                         } else {
-                            Task task = listOfTasks.get(taskNumber);
-                            listOfTasks.get(taskNumber).unmark();
-                            storage.saveToStorage(listOfTasks);
+                            Task task = listOfTasks.getTask(taskNumber);
                             ui.unmarkTask(task);
+                            task.unmark();
+                            storage.saveToStorage(listOfTasks);
                         }
                     } else {
                         throw new GigachadException("Invalid usage! Usage: mark <int>");
@@ -110,7 +104,7 @@ public class Gigachad {
                     if (parts.length >= 2 && command.length() > 4) {
                         String todoDescription = command.substring(5); // skip "todo "
                         ToDo todo = new ToDo(todoDescription);
-                        listOfTasks.add(todo);
+                        listOfTasks.addTask(todo);
                         storage.saveToStorage(listOfTasks);
 
                         ui.addTask(todo, listOfTasks);
@@ -140,12 +134,14 @@ public class Gigachad {
 
                     Deadline deadline = new Deadline(deadlineDescription,
                             LocalDateTime.parse(deadlineDueDate, formatter));
-                    listOfTasks.add(deadline);
+                    listOfTasks.addTask(deadline);
                     storage.saveToStorage(listOfTasks);
 
                     ui.addTask(deadline, listOfTasks);
                 } catch (GigachadException e) {
                     System.out.println(e.getMessage());
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
                 }
                 break;
             case "event":
@@ -170,12 +166,14 @@ public class Gigachad {
                     Event event = new Event(eventDescription,
                             LocalDateTime.parse(from, formatter),
                             LocalDateTime.parse(to, formatter));
-                    listOfTasks.add(event);
+                    listOfTasks.addTask(event);
                     storage.saveToStorage(listOfTasks);
 
                     ui.addTask(event, listOfTasks);
                 } catch (GigachadException e) {
                     System.out.println(e.getMessage());
+                }  catch (DateTimeParseException e) {
+                    System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
                 }
                 break;
             case "bye":
@@ -185,5 +183,9 @@ public class Gigachad {
                 ui.invalidCommand();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Gigachad(Paths.get("data/tasks.txt")).run();
     }
 }

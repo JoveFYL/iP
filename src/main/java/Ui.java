@@ -32,19 +32,27 @@ public class Ui {
 
     public void markTask(Task task) {
         showLine();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
+        if (!task.getIsDone()) {
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println(task);
+        } else {
+            System.out.println("I already marked this task as done!");
+        }
         showLine();
     }
 
     public void unmarkTask(Task task) {
         showLine();
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
+        if (task.getIsDone()) {
+            System.out.println("Nice! I've marked this task as undone:");
+            System.out.println(task);
+        } else {
+            System.out.println("I already marked this task as undone!");
+        }
         showLine();
     }
 
-    public void addTask(Task task, ArrayList<Task> listOfTasks) {
+    public void addTask(Task task, TaskList listOfTasks) {
         showLine();
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
@@ -52,7 +60,7 @@ public class Ui {
         showLine();
     }
 
-    public void deleteTask(Task task, ArrayList<Task> listOfTasks) {
+    public void deleteTask(Task task, TaskList listOfTasks) {
         showLine();
         System.out.println("Noted. I've removed this task:");
         System.out.println("  " + task);
@@ -60,9 +68,9 @@ public class Ui {
         showLine();
     }
 
-    public void listTasks(ArrayList<Task> listOfTasks) {
+    public void listTasks(TaskList listOfTasks) {
         for (int i = 0; i < listOfTasks.size(); i++) {
-            System.out.println((i + 1) + ". " + listOfTasks.get(i));
+            System.out.println((i + 1) + ". " + listOfTasks.getTask(i));
         }
     }
 
