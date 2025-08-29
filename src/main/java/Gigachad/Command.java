@@ -35,42 +35,33 @@ public class Command {
         return this.rawInput;
     }
 
-    public void execute(TaskList listOfTasks, Ui ui, Storage storage) {
+    public void execute(TaskList listOfTasks, Ui ui, Storage storage) throws GigachadException {
         switch (this.command) {
         case "list":
-            try {
-                if (listOfTasks.isEmpty()) {
-                    throw new GigachadException("Empty list!");
-                }
-
-                ui.listTasks(listOfTasks);
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
+            if (listOfTasks.isEmpty()) {
+                throw new GigachadException("Empty list!");
             }
+
+            ui.listTasks(listOfTasks);
             break;
         case "delete":
-            try {
-                if (listOfTasks.isEmpty()) {
-                    throw new GigachadException("Empty list! Nothing can be deleted.");
-                }
+            if (listOfTasks.isEmpty()) {
+                throw new GigachadException("Empty list! Nothing can be deleted.");
+            }
 
-                if (parts.length == 2) {
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    if (taskNumber >= listOfTasks.size()) {
-                        throw new GigachadException("Invalid task number! You only have " + listOfTasks.size()
-                                + " tasks.");
-                    } else {
-                        Task removedTask = listOfTasks.deleteTask(taskNumber);
-                        ui.deleteTask(removedTask, listOfTasks);
-                        storage.saveToStorage(listOfTasks);
-                    }
+            if (parts.length == 2) {
+                int taskNumber = Integer.parseInt(parts[1]) - 1;
+                if (taskNumber >= listOfTasks.size()) {
+                    throw new GigachadException("Invalid task number! You only have " + listOfTasks.size()
+                            + " tasks.");
+                } else {
+                    Task removedTask = listOfTasks.deleteTask(taskNumber);
+                    ui.deleteTask(removedTask, listOfTasks);
+                    storage.saveToStorage(listOfTasks);
                 }
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
             }
             break;
         case "mark":
-            try {
                 if (parts.length == 2) {
                     int taskNumber = Integer.parseInt(parts[1]) - 1;
                     if (taskNumber >= listOfTasks.size()) {
@@ -85,12 +76,8 @@ public class Command {
                 } else {
                     throw new GigachadException("Invalid usage! Usage: mark <int>");
                 }
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
-            }
             break;
         case "unmark":
-            try {
                 if (parts.length == 2) {
                     int taskNumber = Integer.parseInt(parts[1]) - 1;
                     if (taskNumber >= listOfTasks.size()) {
@@ -105,12 +92,8 @@ public class Command {
                 } else {
                     throw new GigachadException("Invalid usage! Usage: mark <int>");
                 }
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
-            }
             break;
         case "todo":
-            try {
                 if (parts.length >= 2 && rawInput.length() > 4) {
                     String todoDescription = rawInput.substring(5); // skip "todo "
                     ToDo todo = new ToDo(todoDescription);
@@ -121,9 +104,6 @@ public class Command {
                 } else {
                     throw new GigachadException("Invalid usage! Usage: todo <task>");
                 }
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
-            }
             break;
         case "deadline":
             try {
@@ -148,8 +128,6 @@ public class Command {
                 storage.saveToStorage(listOfTasks);
 
                 ui.addTask(deadline, listOfTasks);
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
             }
@@ -180,8 +158,6 @@ public class Command {
                 storage.saveToStorage(listOfTasks);
 
                 ui.addTask(event, listOfTasks);
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
             }  catch (DateTimeParseException e) {
                 System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
             }
