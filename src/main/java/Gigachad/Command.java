@@ -11,6 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
+/**
+ * Represents a command that can be executed in the Gigachad application.
+ * This class parses and executes various user commands for task management, including
+ * adding, deleting, marking, and listing tasks.
+ */
 public class Command {
     private final String command;
     private final String[] parts;
@@ -35,6 +40,16 @@ public class Command {
         return this.rawInput;
     }
 
+    /**
+     * Executes this command using provided TaskList, UI and Storage.
+     * Performs different operations based on command type, such as adding tasks,
+     * marking tasks as done/undone, deleting tasks, or listing all tasks.
+     *
+     * @param listOfTasks the TaskList containing tasks to be saved to storage
+     * @param ui the user interface for displaying messages
+     * @param storage the storage system for persisting tasks
+     * @throws GigachadException if the command execution fails due to invalid input or other errors
+     */
     public void execute(TaskList listOfTasks, Ui ui, Storage storage) throws GigachadException {
         switch (this.command) {
         case "list":
@@ -62,48 +77,48 @@ public class Command {
             }
             break;
         case "mark":
-                if (parts.length == 2) {
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    if (taskNumber >= listOfTasks.size()) {
-                        throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
-                                + " tasks.");
-                    } else {
-                        Task task = listOfTasks.getTask(taskNumber);
-                        ui.markTask(task);
-                        task.markAsDone();
-                        storage.saveToStorage(listOfTasks);
-                    }
+            if (parts.length == 2) {
+                int taskNumber = Integer.parseInt(parts[1]) - 1;
+                if (taskNumber >= listOfTasks.size()) {
+                    throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
+                            + " tasks.");
                 } else {
-                    throw new GigachadException("Invalid usage! Usage: mark <int>");
+                    Task task = listOfTasks.getTask(taskNumber);
+                    ui.markTask(task);
+                    task.markAsDone();
+                    storage.saveToStorage(listOfTasks);
                 }
+            } else {
+                throw new GigachadException("Invalid usage! Usage: mark <int>");
+            }
             break;
         case "unmark":
-                if (parts.length == 2) {
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    if (taskNumber >= listOfTasks.size()) {
-                        throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
-                                + " tasks.");
-                    } else {
-                        Task task = listOfTasks.getTask(taskNumber);
-                        ui.unmarkTask(task);
-                        task.unmark();
-                        storage.saveToStorage(listOfTasks);
-                    }
+            if (parts.length == 2) {
+                int taskNumber = Integer.parseInt(parts[1]) - 1;
+                if (taskNumber >= listOfTasks.size()) {
+                    throw new GigachadException("Invalid task number!  You only have " + listOfTasks.size()
+                            + " tasks.");
                 } else {
-                    throw new GigachadException("Invalid usage! Usage: mark <int>");
+                    Task task = listOfTasks.getTask(taskNumber);
+                    ui.unmarkTask(task);
+                    task.unmark();
+                    storage.saveToStorage(listOfTasks);
                 }
+            } else {
+                throw new GigachadException("Invalid usage! Usage: mark <int>");
+            }
             break;
         case "todo":
-                if (parts.length >= 2 && rawInput.length() > 4) {
-                    String todoDescription = rawInput.substring(5); // skip "todo "
-                    ToDo todo = new ToDo(todoDescription);
-                    listOfTasks.addTask(todo);
-                    storage.saveToStorage(listOfTasks);
+            if (parts.length >= 2 && rawInput.length() > 4) {
+                String todoDescription = rawInput.substring(5); // skip "todo "
+                ToDo todo = new ToDo(todoDescription);
+                listOfTasks.addTask(todo);
+                storage.saveToStorage(listOfTasks);
 
-                    ui.addTask(todo, listOfTasks);
-                } else {
-                    throw new GigachadException("Invalid usage! Usage: todo <task>");
-                }
+                ui.addTask(todo, listOfTasks);
+            } else {
+                throw new GigachadException("Invalid usage! Usage: todo <task>");
+            }
             break;
         case "deadline":
             try {
