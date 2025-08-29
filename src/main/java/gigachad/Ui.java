@@ -1,11 +1,11 @@
-package Gigachad;
+package gigachad;
 
-import Gigachad.task.Task;
+import gigachad.task.Task;
 
 import java.util.Scanner;
 
 /**
- * Handles all user interface interactions for the Gigachad application.
+ * Handles all user interface interactions for the gigachad application.
  * This class is responsible for displaying messages to the user and reading input commands.
  * It provides methods for various UI operations like welcoming the user, displaying tasks,
  * and showing operation results.
@@ -41,7 +41,7 @@ public class Ui {
      */
     public void welcomeUser() {
         showLine();
-        System.out.println("Hello! I'm Gigachad");
+        System.out.println("Hello! I'm gigachad");
         System.out.println("What can I do for you?");
         showLine();
     }

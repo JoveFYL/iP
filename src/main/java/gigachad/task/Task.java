@@ -1,4 +1,4 @@
-package Gigachad.task;
+package gigachad.task;
 
 /**
  * Creates Task contains a task description and whether it is completed or not.

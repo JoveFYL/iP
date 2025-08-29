@@ -1,15 +1,14 @@
 package seedu.Gigachad;
 
-import Gigachad.Command;
-import Gigachad.Storage;
-import Gigachad.TaskList;
-import Gigachad.Ui;
-import Gigachad.exception.GigachadException;
-import Gigachad.task.Task;
+import gigachad.Command;
+import gigachad.Storage;
+import gigachad.TaskList;
+import gigachad.Ui;
+import gigachad.exception.GigachadException;
+import gigachad.task.Task;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import javax.imageio.IIOException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;

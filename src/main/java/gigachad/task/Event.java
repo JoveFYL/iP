@@ -1,4 +1,4 @@
-package Gigachad.task;
+package gigachad.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

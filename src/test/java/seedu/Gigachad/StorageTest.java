@@ -1,8 +1,8 @@
 package seedu.Gigachad;  //same package as the class being tested
 
-import Gigachad.Storage;
-import Gigachad.TaskList;
-import Gigachad.task.Task;
+import gigachad.Storage;
+import gigachad.TaskList;
+import gigachad.task.Task;
 
 import java.io.File;
 import java.io.IOException;
