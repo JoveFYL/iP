@@ -1,5 +1,9 @@
 package Gigachad.task;
 
+/**
+ * Creates Task contains a task description and whether it is completed or not.
+ * Task can be marked as complete or incomplete.
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -37,6 +41,12 @@ public class Task {
         }
     }
 
+    /**
+     *
+     * Saves the task in the correct format to be stored in the storage file.
+     * @return task String in the form:
+     * "T | (1 or 0) | (task description)"
+     */
     public String saveFormat() {
         return "T | " + this.getNumericIsDone() + " | " + this.description;
     }

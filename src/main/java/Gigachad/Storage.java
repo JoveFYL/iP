@@ -15,15 +15,39 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents a Storage object file to store the tasks of the user.
+ */
 public class Storage {
     protected Path filePath;
     protected ArrayList<Task> tasks;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     * Initialises an empty ArrayList of tasks.
+     *
+     * @param filePath the path to the file where tasks will be stored
+     */
     public Storage(Path filePath) {
         this.filePath = filePath;
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Initialises the storage system by creating directories and files,
+     * then loads existing tasks from the storage file if it exists.
+     *
+     * Creates the parent directories if they do not exist, creates the storage file if storage file does not exist
+     * and parses existing task data from the file format:
+     * "T | isDone | description" for ToDo tasks
+     * "D | isDone | description | deadlineDateTime" for Deadline tasks
+     * "E | isDone | description | startDateTime - endDateTime" for Event tasks
+     *
+     * Prints initialisation status and current task list to console.
+     * Handles corrupted file formats by catching and printing error messages.
+     *
+     * @return an ArrayList of Task objects loaded from storage, or empty list if file doesn't exist or error occurs
+     */
     public ArrayList<Task> initStorage() {
         try {
             ArrayList<Task> listOfTasks = new ArrayList<>();
@@ -54,7 +78,9 @@ public class Storage {
                             if (parts.length == 3) {
                                 ToDo todo = new ToDo(todoDescription);
                                 listOfTasks.add(todo);
-                                if (Integer.parseInt(isDone) == 1) todo.markAsDone();
+                                if (Integer.parseInt(isDone) == 1) {
+                                    todo.markAsDone();
+                                }
                             } else {
                                 throw new GigachadException("Invalid format! Corrupted file!");
                             }
@@ -73,7 +99,9 @@ public class Storage {
                                     LocalDateTime.parse(deadlineDueDate,
                                             DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
                             listOfTasks.add(deadline);
-                            if (Integer.parseInt(isDone) == 1) deadline.markAsDone();
+                            if (Integer.parseInt(isDone) == 1) {
+                                deadline.markAsDone();
+                            }
                         } catch (GigachadException e) {
                             System.out.println(e.getMessage());
                         }
@@ -95,14 +123,19 @@ public class Storage {
                             Event event = new Event(todoDescription,
                                     LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")),
                                     LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")));
+
                             listOfTasks.add(event);
-                            if (Integer.parseInt(isDone) == 1) event.markAsDone();
+
+                            if (Integer.parseInt(isDone) == 1) {
+                                event.markAsDone();
+                            }
                         } catch (GigachadException e) {
                             System.out.println(e.getMessage());
                         }
                         break;
                     }
                 }
+                scanner.close();
             }
 
             System.out.println("Gigachad.Storage initialised");
@@ -118,6 +151,14 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves all tasks from the given TaskList to the storage file.
+     * Overwrites the existing file content with the current task data.
+     * Each task is written in its save format on a separate line.
+     *
+     * @param taskList the TaskList containing tasks to be saved to storage
+     * @throws IOException if an error occurs while writing to the file (handled internally)
+     */
     public void saveToStorage(TaskList taskList) {
         try {
             FileWriter fw = new FileWriter(filePath.toString());
