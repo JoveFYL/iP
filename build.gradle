@@ -28,7 +28,7 @@ test {
 }
 
 application {
-    mainClass.set("gigachad.gigachad")
+    mainClass.set("gigachad.Gigachad")
 }
 
 shadowJar {

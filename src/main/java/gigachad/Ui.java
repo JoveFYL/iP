@@ -124,6 +124,13 @@ public class Ui {
         }
     }
 
+    public void findTasks(TaskList listOfTasks) {
+        showLine();
+        System.out.println("Here are the matching tasks in your list:");
+        this.listTasks(listOfTasks);
+        showLine();
+    }
+
     /**
      * Displays an error message when an invalid command is entered by user.
      * Provides the user with guidance on the correct command format.
