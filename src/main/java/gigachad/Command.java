@@ -9,6 +9,8 @@ import gigachad.task.ToDo;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Represents a command that can be executed in the gigachad application.
@@ -64,6 +66,28 @@ public class Command {
             }
 
             ui.listTasks(listOfTasks);
+            break;
+        case "find":
+            if (listOfTasks.isEmpty()) {
+                throw new GigachadException("Empty list! Nothing can be deleted.");
+            }
+
+            String[] rawInputParts = rawInput.split(" ", 2);
+
+            if (rawInputParts.length >= 2) {
+                String taskSubstring = rawInputParts[1];
+                ArrayList<Task> tasksMatchingSubstring = new ArrayList<>();
+
+                for (Task task : listOfTasks.allTasks()) {
+                    if (task.toString().contains(taskSubstring)) {
+                        tasksMatchingSubstring.add(task);
+                    }
+                }
+
+                ui.findTasks(new TaskList(tasksMatchingSubstring));
+            } else {
+                throw new GigachadException("Input keyword to match!");
+            }
             break;
         case "delete":
             if (listOfTasks.isEmpty()) {
