@@ -1,18 +1,17 @@
-package Gigachad;
+package gigachad;
 
-import Gigachad.exception.GigachadException;
-import Gigachad.task.Deadline;
-import Gigachad.task.Event;
-import Gigachad.task.Task;
-import Gigachad.task.ToDo;
+import gigachad.exception.GigachadException;
+import gigachad.task.Deadline;
+import gigachad.task.Event;
+import gigachad.task.Task;
+import gigachad.task.ToDo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 
 /**
- * Represents a command that can be executed in the Gigachad application.
+ * Represents a command that can be executed in the gigachad application.
  * This class parses and executes various user commands for task management, including
  * adding, deleting, marking, and listing tasks.
  */
@@ -22,6 +21,13 @@ public class Command {
     private final String rawInput;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
+    /**
+     * Constructs a Command with the specified parameters.
+     *
+     * @param type the command type
+     * @param rawInput the raw user input
+     * @param parts the parsed command parts
+     */
     public Command(String type, String rawInput, String[] parts) {
         this.command = type;
         this.rawInput = rawInput;
@@ -134,7 +140,7 @@ public class Command {
                 String deadlineDueDate = rawInput.substring(byIndexDeadline + 4).trim();
 
                 if (deadlineDescription.isEmpty() || deadlineDueDate.isEmpty()) {
-                    throw new GigachadException("Invalid usage! Gigachad.task.Task description or datetime missing.");
+                    throw new GigachadException("Invalid usage! gigachad.task.Task description or datetime missing.");
                 }
 
                 Deadline deadline = new Deadline(deadlineDescription,
@@ -163,7 +169,7 @@ public class Command {
                 String to = rawInput.substring(toIndexEvent + 5).trim();
 
                 if (eventDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    throw new GigachadException("Invalid usage! Gigachad.task.Task description or date missing.");
+                    throw new GigachadException("Invalid usage! gigachad.task.Task description or date missing.");
                 }
 
                 Event event = new Event(eventDescription,

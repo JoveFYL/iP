@@ -1,6 +1,6 @@
-package Gigachad;
+package gigachad;
 
-import Gigachad.task.Task;
+import gigachad.task.Task;
 
 import java.util.ArrayList;
 

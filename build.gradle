@@ -28,11 +28,11 @@ test {
 }
 
 application {
-    mainClass.set("Gigachad.Gigachad")
+    mainClass.set("gigachad.gigachad")
 }
 
 shadowJar {
-    archiveBaseName = "Gigachad"
+    archiveBaseName = "gigachad"
     archiveClassifier = null
     archiveFileName = "gigachad.jar"
 }

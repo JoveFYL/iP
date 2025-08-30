@@ -1,4 +1,4 @@
-package Gigachad.exception;
+package gigachad.exception;
 
 public class GigachadException extends Exception {
     public GigachadException(String errorMessage) {

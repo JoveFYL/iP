@@ -1,9 +1,9 @@
-package Gigachad;
+package gigachad;
 
-import Gigachad.exception.GigachadException;
+import gigachad.exception.GigachadException;
 
 /**
- * Handles parsing of user commands for the Gigachad chatbot
+ * Handles parsing of user commands for the gigachad chatbot
  * and passes executable commands on to Command class.
  * Provides parse method for parsing user input.
  */

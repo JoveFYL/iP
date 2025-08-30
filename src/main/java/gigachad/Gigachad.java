@@ -1,13 +1,12 @@
-package Gigachad;
+package gigachad;
 
-import Gigachad.exception.GigachadException;
+import gigachad.exception.GigachadException;
 
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import java.time.format.DateTimeFormatter;
 
 /**
- * Main class for Gigachad chatbot.
+ * Main class for gigachad chatbot.
  * Initialises application components and manages the main execution loop.
  * Handles user input, command parsing and execution of task operations.
  */
@@ -17,7 +16,7 @@ public class Gigachad {
     private final Ui ui;
 
     /**
-     * Constructs new Gigachad chatbot instance.
+     * Constructs new gigachad chatbot instance.
      * Initialises application components: UI, Storage and TaskList.
      * @param filePath the path to the file where tasks will be stored
      */
@@ -28,7 +27,7 @@ public class Gigachad {
     }
 
     /**
-     * Starts main execution loop of Gigachad.
+     * Starts main execution loop of gigachad.
      * Displays welcome message, and reads, parses and executes user commands until "bye" command is received.
      * Handles any exceptions that occur during user command execution
      */
@@ -49,8 +48,8 @@ public class Gigachad {
     }
 
     /**
-     * Main entry point of Gigachad.
-     * Creates new Gigachad instance with default file path and starts the Gigachad chatbot.
+     * Main entry point of gigachad.
+     * Creates new gigachad instance with default file path and starts the gigachad chatbot.
      *
      * @param args command-line arguments
      */

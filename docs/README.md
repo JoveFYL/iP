@@ -1,4 +1,4 @@
-# Gigachad.Gigachad User Guide
+# gigachad.gigachad User Guide
 
 // Update the title above to match the actual product name
 
