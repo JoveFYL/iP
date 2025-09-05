@@ -1,11 +1,5 @@
 package gigachad;
 
-import gigachad.exception.GigachadException;
-import gigachad.task.Deadline;
-import gigachad.task.Event;
-import gigachad.task.Task;
-import gigachad.task.ToDo;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +8,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import gigachad.exception.GigachadException;
+import gigachad.task.Deadline;
+import gigachad.task.Event;
+import gigachad.task.Task;
+import gigachad.task.ToDo;
+
 
 /**
  * Represents a Storage object file to store the tasks of the user.
@@ -36,13 +37,11 @@ public class Storage {
     /**
      * Initialises the storage system by creating directories and files,
      * then loads existing tasks from the storage file if it exists.
-     *
      * Creates the parent directories if they do not exist, creates the storage file if storage file does not exist
      * and parses existing task data from the file format:
      * "T | isDone | description" for ToDo tasks
      * "D | isDone | description | deadlineDateTime" for Deadline tasks
      * "E | isDone | description | startDateTime - endDateTime" for Event tasks
-     *
      * Prints initialisation status and current task list to console.
      * Handles corrupted file formats by catching and printing error messages.
      *
@@ -117,7 +116,7 @@ public class Storage {
                             String to = fromToDates[1];
 
                             if (todoDescription.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                                throw new GigachadException("Invalid format! gigachad.task.Task description or date missing.");
+                                throw new GigachadException("Invalid format! Task description or date missing.");
                             }
 
                             Event event = new Event(todoDescription,
@@ -138,7 +137,7 @@ public class Storage {
                 scanner.close();
             }
 
-            System.out.println("gigachad.Storage initialised");
+            System.out.println("Storage initialised");
             System.out.println("You have the following tasks: ");
             for (int i = 0; i < listOfTasks.size(); i++) {
                 System.out.print(i + 1 + ". ");
