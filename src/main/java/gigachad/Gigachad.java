@@ -1,9 +1,9 @@
 package gigachad;
 
-import gigachad.exception.GigachadException;
-
-import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import gigachad.exception.GigachadException;
 
 /**
  * Main class for gigachad chatbot.
@@ -26,6 +26,18 @@ public class Gigachad {
         this.listOfTasks = new TaskList(storage.initStorage());
     }
 
+    public String getResponse(String input) {
+        String response = "";
+        try {
+            Command parsedCommand = Parser.parse(input);
+            response = parsedCommand.execute(listOfTasks, ui, storage);
+        } catch (GigachadException e) {
+            return e.getMessage();
+        }
+
+        return response;
+    }
+
     /**
      * Starts main execution loop of gigachad.
      * Displays welcome message, and reads, parses and executes user commands until "bye" command is received.
@@ -38,12 +50,7 @@ public class Gigachad {
         String command = "";
         while (!command.equals("bye")) {
             command = ui.readCommand();
-            try {
-                Command parsedCommand = Parser.parse(command);
-                parsedCommand.execute(listOfTasks, ui, storage);
-            } catch (GigachadException e) {
-                System.out.println(e.getMessage());
-            }
+            getResponse(command);
         }
     }
 

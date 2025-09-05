@@ -1,16 +1,16 @@
 package gigachad;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+
 import gigachad.exception.GigachadException;
 import gigachad.task.Deadline;
 import gigachad.task.Event;
 import gigachad.task.Task;
 import gigachad.task.ToDo;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Represents a command that can be executed in the gigachad application.
@@ -58,14 +58,16 @@ public class Command {
      * @param storage the storage system for persisting tasks
      * @throws GigachadException if the command execution fails due to invalid input or other errors
      */
-    public void execute(TaskList listOfTasks, Ui ui, Storage storage) throws GigachadException {
+    public String execute(TaskList listOfTasks, Ui ui, Storage storage) throws GigachadException {
+        StringBuilder response = new StringBuilder();
+
         switch (this.command) {
         case "list":
             if (listOfTasks.isEmpty()) {
                 throw new GigachadException("Empty list!");
             }
 
-            ui.listTasks(listOfTasks);
+            response.append(ui.listTasks(listOfTasks));
             break;
         case "find":
             if (listOfTasks.isEmpty()) {
@@ -84,7 +86,7 @@ public class Command {
                     }
                 }
 
-                ui.findTasks(new TaskList(tasksMatchingSubstring));
+                response.append(ui.findTasks(new TaskList(tasksMatchingSubstring)));
             } else {
                 throw new GigachadException("Input keyword to match!");
             }
@@ -101,7 +103,7 @@ public class Command {
                             + " tasks.");
                 } else {
                     Task removedTask = listOfTasks.deleteTask(taskNumber);
-                    ui.deleteTask(removedTask, listOfTasks);
+                    response.append(ui.deleteTask(removedTask, listOfTasks));
                     storage.saveToStorage(listOfTasks);
                 }
             }
@@ -114,7 +116,7 @@ public class Command {
                             + " tasks.");
                 } else {
                     Task task = listOfTasks.getTask(taskNumber);
-                    ui.markTask(task);
+                    response.append(ui.markTask(task));
                     task.markAsDone();
                     storage.saveToStorage(listOfTasks);
                 }
@@ -130,7 +132,7 @@ public class Command {
                             + " tasks.");
                 } else {
                     Task task = listOfTasks.getTask(taskNumber);
-                    ui.unmarkTask(task);
+                    response.append(ui.unmarkTask(task));
                     task.unmark();
                     storage.saveToStorage(listOfTasks);
                 }
@@ -145,7 +147,7 @@ public class Command {
                 listOfTasks.addTask(todo);
                 storage.saveToStorage(listOfTasks);
 
-                ui.addTask(todo, listOfTasks);
+                response.append(ui.addTask(todo, listOfTasks));
             } else {
                 throw new GigachadException("Invalid usage! Usage: todo <task>");
             }
@@ -156,8 +158,8 @@ public class Command {
                 int byIndexDeadline = rawInput.indexOf('/');
                 if (firstSpaceDeadline == -1 || byIndexDeadline == -1
                         || byIndexDeadline <= firstSpaceDeadline) {
-                    throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date/time>. " +
-                            "Format for the date is: yyyy-MM-dd HHmm");
+                    throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date/time>. "
+                            + "Format for the date is: yyyy-MM-dd HHmm");
                 }
 
                 String deadlineDescription = rawInput.substring(firstSpaceDeadline + 1, byIndexDeadline).trim();
@@ -172,7 +174,7 @@ public class Command {
                 listOfTasks.addTask(deadline);
                 storage.saveToStorage(listOfTasks);
 
-                ui.addTask(deadline, listOfTasks);
+                response.append(ui.addTask(deadline, listOfTasks));
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
             }
@@ -184,8 +186,8 @@ public class Command {
                 int toIndexEvent = rawInput.indexOf(" /to");
 
                 if (firstSpace == -1 || fromIndexEvent == -1 || toIndexEvent == -1) {
-                    throw new GigachadException("Invalid usage! Usage: event <task> /from <beginning date> " +
-                            "/to <end date>. Format for the date is: yyyy-MM-dd HHmm");
+                    throw new GigachadException("Invalid usage! Usage: event <task> /from <beginning date> "
+                            + "/to <end date>. Format for the date is: yyyy-MM-dd HHmm");
                 }
 
                 String eventDescription = rawInput.substring(firstSpace + 1, fromIndexEvent).trim();
@@ -202,16 +204,17 @@ public class Command {
                 listOfTasks.addTask(event);
                 storage.saveToStorage(listOfTasks);
 
-                ui.addTask(event, listOfTasks);
-            }  catch (DateTimeParseException e) {
+                response.append(ui.addTask(event, listOfTasks));
+            } catch (DateTimeParseException e) {
                 System.out.println("Invalid usage! Format for the date is: yyyy-MM-dd HHmm");
             }
             break;
         case "bye":
-            ui.goodbyeUser();
+            response.append(ui.goodbyeUser());
             break;
         default:
-            ui.invalidCommand();
+            response.append(ui.invalidCommand());
         }
+        return response.toString();
     }
 }
