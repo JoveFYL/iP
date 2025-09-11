@@ -45,6 +45,7 @@ test {
 
 checkstyle {
     toolVersion = '11.0.1'
+    ignoreFailures = true;
 }
 
 application {

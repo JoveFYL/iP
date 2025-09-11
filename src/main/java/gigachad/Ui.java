@@ -1,10 +1,11 @@
 package gigachad;
 
+import java.util.Scanner;
+
 import gigachad.task.Task;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.util.Duration;
-import java.util.Scanner;
 
 /**
  * Handles all user interface interactions for the gigachad application.
@@ -42,7 +43,7 @@ public class Ui {
      * Displays welcome message to user when chatbot starts up.
      */
     public String welcomeUser() {
-        return "Hello! I'm Gigachad!\n What can I do for you?";
+        return "Hello! I'm gigachad!\n What can I do for you?";
     }
 
     /**

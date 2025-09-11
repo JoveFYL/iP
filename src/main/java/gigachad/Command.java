@@ -75,6 +75,7 @@ public class Command {
             }
 
             String[] rawInputParts = rawInput.split(" ", 2);
+            assert rawInputParts.length >= 2 : "x should be more than 2";
 
             if (rawInputParts.length >= 2) {
                 String taskSubstring = rawInputParts[1];

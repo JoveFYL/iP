@@ -20,8 +20,10 @@ public class Parser {
 
         String[] parts = input.trim().split(" ");
         String firstWord = parts[0].toLowerCase();
+        assert !firstWord.isEmpty() : "command should not be empty";
 
         String[] args = new String[parts.length];
+
         System.arraycopy(parts, 0, args, 0, args.length);
         return new Command(firstWord, input, args);
     }

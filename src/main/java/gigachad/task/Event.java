@@ -10,8 +10,17 @@ public class Event extends Task {
     protected LocalDateTime from;
     protected LocalDateTime to;
 
+    /**
+     * Event Constructor to input todo with a from and to date
+     * @param description description of event
+     * @param from beginning time of event
+     * @param to ending time of event
+     */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
+        assert !description.isBlank() : "Deadline description must not be null/blank";
+        assert from != null : "Deadline datetime must not be null";
+        assert to != null : "Deadline datetime must not be null";
         this.from = from;
         this.to = to;
     }

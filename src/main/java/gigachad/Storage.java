@@ -32,6 +32,7 @@ public class Storage {
     public Storage(Path filePath) {
         this.filePath = filePath;
         this.tasks = new ArrayList<>();
+        assert filePath != null : "Deadline description must not be null/blank";
     }
 
     /**
@@ -67,6 +68,8 @@ public class Storage {
                 while (scanner.hasNext()) {
                     String line = scanner.nextLine();
                     String[] parts = line.split(" \\| ");
+                    assert parts.length >= 3 : "Line must contain at least 3 parts: " + line;
+
                     String command = parts[0];
                     String isDone = parts[1];
                     String todoDescription = parts[2];
@@ -110,6 +113,8 @@ public class Storage {
                             if (parts.length != 4 && parts[3].split(" - ").length != 2) {
                                 throw new GigachadException("Invalid format! Corrupted file!");
                             }
+                            assert parts.length == 4 : "Event must have 4 parts: " + line;
+                            assert parts[3].contains(" - ") : "Event datetime part must contain ' - ': " + parts[3];
 
                             String[] fromToDates = parts[3].split(" - ");
                             String from = fromToDates[0];
@@ -132,6 +137,8 @@ public class Storage {
                             System.out.println(e.getMessage());
                         }
                         break;
+                    default:
+                        assert false : command;
                     }
                 }
                 scanner.close();
