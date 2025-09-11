@@ -59,6 +59,7 @@ public class Command {
         case "todo" -> handleTodo(listOfTasks, ui, storage);
         case "deadline" -> handleDeadline(listOfTasks, ui, storage);
         case "event" -> handleEvent(listOfTasks, ui, storage);
+        case "help" -> handleHelp();
         case "bye" -> ui.goodbyeUser();
         default -> ui.invalidCommand();
         };
@@ -178,6 +179,20 @@ public class Command {
         } catch (DateTimeParseException e) {
             throw new GigachadException("Invalid date format! Use yyyy-MM-dd HHmm.");
         }
+    }
+
+    private String handleHelp() {
+        return """
+                To add todos: todo <task>
+                To add deadlines: deadline <task> /by <due date>. Format: yyyy-MM-dd HHmm
+                To add events: event <task> /from <start> /to <end>. Format: yyyy-MM-dd HHmm
+                To list all your todos: list
+                To mark your todos as complete: mark <task number (find using list)>
+                To unmark your todos as complete: unmark <task number (find using list)>
+                To delete your todos: delete <task number (find using list)>
+                To search for todos with keywords: find <keyword>
+                To exit: bye
+                """;
     }
 
     private int parseTaskNumber(TaskList listOfTasks) throws GigachadException {
