@@ -10,8 +10,15 @@ public class Deadline extends Task {
 
     protected LocalDateTime by;
 
+    /**
+     * Deadline constructor
+     * @param description description of the deadline
+     * @param by date and time the dateline must be completed
+     */
     public Deadline(String description, LocalDateTime by) {
         super(description);
+        assert description != null && !description.isBlank() : "Deadline description must not be null/blank";
+        assert by != null : "Deadline datetime must not be null";
         this.by = by;
     }
 

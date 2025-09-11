@@ -8,7 +8,12 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Task constructor
+     * @param description description of task
+     */
     public Task(String description) {
+        assert description != null && !description.isBlank() : "Deadline description must not be null/blank";
         this.description = description;
         this.isDone = false;
     }
@@ -29,12 +34,18 @@ public class Task {
         return this.isDone;
     }
 
+    /**
+     * Mark a task as complete
+     */
     public void markAsDone() {
         if (!isDone) {
             isDone = true;
         }
     }
 
+    /**
+     * Unmark a task as complete
+     */
     public void unmark() {
         if (isDone) {
             isDone = false;
@@ -42,7 +53,6 @@ public class Task {
     }
 
     /**
-     *
      * Saves the task in the correct format to be stored in the storage file.
      * @return task String in the form:
      * "T | (1 or 0) | (task description)"

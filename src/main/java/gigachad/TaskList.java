@@ -1,9 +1,13 @@
 package gigachad;
 
-import gigachad.task.Task;
 
 import java.util.ArrayList;
 
+import gigachad.task.Task;
+
+/**
+ * TaskList class to hold the list of tasks in an ArrayList
+ */
 public class TaskList {
     protected ArrayList<Task> listOfTasks;
 
