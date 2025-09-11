@@ -65,6 +65,7 @@ public class Ui {
      */
     public String markTask(Task task) {
         if (!task.getIsDone()) {
+            task.markAsDone();
             return "Nice! I've marked this task as done:\n" + task;
         } else {
             return "I already marked this task as done!";
@@ -77,6 +78,7 @@ public class Ui {
      */
     public String unmarkTask(Task task) {
         if (task.getIsDone()) {
+            task.unmark();
             return "Nice! I've marked this task as undone:\n" + task;
         } else {
             return "I already marked this task as undone!";
