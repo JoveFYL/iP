@@ -129,7 +129,8 @@ public class Command {
         try {
             int byIndex = rawInput.indexOf(DEADLINE_DELIMITER);
             if (byIndex == -1) {
-                throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date>. Format: yyyy-MM-dd HHmm");
+                throw new GigachadException("Invalid usage! Usage: deadline <task> /by <due date>. "
+                        + "Format: yyyy-MM-dd HHmm");
             }
             String description = rawInput.substring(9, byIndex).trim(); // skip "deadline "
             String dueDate = rawInput.substring(byIndex + DEADLINE_DELIMITER.length()).trim();
