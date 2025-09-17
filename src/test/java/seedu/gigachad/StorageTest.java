@@ -188,4 +188,17 @@ public class StorageTest {
         assertTrue(tasks.get(1).toString().contains("[D][ ] submit assignment"));
         assertTrue(tasks.get(2).toString().contains("[E][X] conference"));
     }
+
+    /**
+     * Tests that {@link Storage} loads tasks from an existing file correctly, even if parent directories are missing
+     */
+    @Test
+    public void initStorage_createsMissingParentDirectories() {
+        Path filePath = tempDir.toPath().resolve("nested/folder/tasks.txt");
+        Storage storage = new Storage(filePath);
+        ArrayList<Task> tasks = storage.initStorage();
+
+        assertTrue(filePath.toFile().exists(), "File should be created even if parent directories are missing");
+        assertTrue(tasks.isEmpty(), "Task list should be empty for a new file with missing parent directories");
+    }
 }
