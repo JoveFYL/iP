@@ -4,7 +4,6 @@ import static java.nio.file.Files.readString;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -189,9 +188,6 @@ public class StorageTest {
         assertTrue(tasks.get(2).toString().contains("[E][X] conference"));
     }
 
-    /**
-     * Tests that {@link Storage} loads tasks from an existing file correctly, even if parent directories are missing
-     */
     @Test
     public void initStorage_createsMissingParentDirectories() {
         Path filePath = tempDir.toPath().resolve("nested/folder/tasks.txt");
